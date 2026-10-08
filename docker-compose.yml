@@ -1,0 +1,65 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-cpi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cpi_local_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-cpi}
+    ports: ["5432:5432"]
+    volumes: ["pgdata:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cpi} -d ${POSTGRES_DB:-cpi}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  worker:
+    profiles: ["workers"]
+    build: .
+    command: celery -A app.celery_app worker -l info --concurrency=2 -Q ingest,default,maintenance
+    environment: &app_env
+      DATABASE_URL_OVERRIDE: ${DATABASE_URL_OVERRIDE:-}
+      POSTGRES_HOST: db
+      POSTGRES_USER: ${POSTGRES_USER:-cpi}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cpi_local_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-cpi}
+      REDIS_URL: redis://redis:6379/0
+      BRONZE_LOCAL_PATH: /app/data/bronze
+      DEADLETTER_LOCAL_PATH: /app/data/deadletter
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      ENV: ${ENV:-dev}
+    volumes: ["./data:/app/data"]
+    depends_on:
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+
+  beat:
+    profiles: ["workers"]
+    build: .
+    command: celery -A app.celery_app beat -l info --schedule /tmp/celerybeat-schedule
+    environment: *app_env
+    depends_on:
+      redis: {condition: service_healthy}
+    restart: unless-stopped
+
+  metabase:
+    profiles: ["bi"]
+    image: metabase/metabase:latest
+    ports: ["3000:3000"]
+    environment:
+      MB_DB_TYPE: h2
+      JAVA_OPTS: -Xmx512m
+    depends_on:
+      db: {condition: service_healthy}
+
+volumes:
+  pgdata:

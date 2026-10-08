@@ -1,0 +1,48 @@
+services:
+  db:
+    profiles: ["never"]
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports: []
+    command: redis-server --save 60 1 --maxmemory 256mb --maxmemory-policy noeviction
+
+  api:
+    image: ${ECR_IMAGE:-cpi:latest}
+    command: uvicorn app.api.main:app --host 0.0.0.0 --port 8000
+    env_file: [/srv/cpi/.env, /srv/cpi/.env.static]
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    ports: ["8000:8000"]
+    restart: always
+    depends_on: [redis]
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: /cpi/prod/app
+        awslogs-stream: api
+
+  worker:
+    image: ${ECR_IMAGE:-cpi:latest}
+    command: celery -A app.celery_app worker -l info --concurrency=2 -Q ingest,default,maintenance
+    env_file: [/srv/cpi/.env, /srv/cpi/.env.static]
+    restart: always
+    depends_on: [redis]
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: /cpi/prod/app
+        awslogs-stream: worker
+
+  beat:
+    image: ${ECR_IMAGE:-cpi:latest}
+    command: celery -A app.celery_app beat -l info --schedule /tmp/celerybeat-schedule
+    env_file: [/srv/cpi/.env, /srv/cpi/.env.static]
+    restart: always
+    depends_on: [redis]
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: /cpi/prod/app
+        awslogs-stream: beat
