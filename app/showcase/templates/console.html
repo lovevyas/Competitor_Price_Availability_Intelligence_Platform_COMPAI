@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pipeline walkthrough</title>
+<link rel="stylesheet" href="/showcase/static/showcase.css">
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <span class="brand">▸ price-intelligence</span>
+    <a href="/showcase">← overview</a>
+    <span class="spacer"></span>
+    <div class="speed" id="speed" role="group" aria-label="Playback speed">
+      <button data-speed="1" aria-pressed="true">1×</button>
+      <button data-speed="2" aria-pressed="false">2×</button>
+      <button data-speed="4" aria-pressed="false">4×</button>
+      <button data-speed="0" aria-pressed="false">skip</button>
+    </div>
+    <button class="btn" id="fetch" title="Pull fresh observations from Open Prices">↻ Fetch data</button>
+    <button class="btn" id="data" title="View and download the collected observations">⤓ Data</button>
+    <button class="btn primary" id="run">Run pipeline</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="layout">
+
+    <aside class="rail" id="rail">
+      <div class="rail-title">Pipeline</div>
+      <div class="stage-item" data-stage="connect" data-state="idle">
+        <span class="stage-dot"></span>
+        <span><span class="stage-name">Connect</span><br><span class="stage-ms"></span></span>
+      </div>
+      <div class="stage-item" data-stage="extract" data-state="idle">
+        <span class="stage-dot"></span>
+        <span><span class="stage-name">Extract</span><br><span class="stage-ms"></span></span>
+      </div>
+      <div class="stage-item" data-stage="resolve" data-state="idle">
+        <span class="stage-dot"></span>
+        <span><span class="stage-name">Resolve</span><br><span class="stage-ms"></span></span>
+      </div>
+      <div class="stage-item" data-stage="compare" data-state="idle">
+        <span class="stage-dot"></span>
+        <span><span class="stage-name">Compare</span><br><span class="stage-ms"></span></span>
+      </div>
+      <div class="stage-item" data-stage="decide" data-state="idle">
+        <span class="stage-dot"></span>
+        <span><span class="stage-name">Decide</span><br><span class="stage-ms"></span></span>
+      </div>
+      <div class="stage-item" data-stage="narrate" data-state="idle">
+        <span class="stage-dot"></span>
+        <span><span class="stage-name">Narrate</span><br><span class="stage-ms"></span></span>
+      </div>
+    </aside>
+
+    <main class="console" id="console">
+      <div class="idle">
+        <strong>Ready.</strong><br>
+        Press <em>Run pipeline</em>. Each stage queries the live warehouse and prints what
+        it finds. The stage timings in the rail are real; the typing is not.
+      </div>
+    </main>
+
+  </div>
+</div>
+
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet-in">
+    <div class="sheet-bar">
+      <strong id="sheet-title">Collected observations</strong>
+      <span class="spacer"></span>
+      <a class="btn" id="dl" href="/showcase/api/dataset?limit=10000&amp;download=true">⤓ CSV</a>
+      <button class="btn" id="sheet-close">close</button>
+    </div>
+    <div class="sheet-body" id="sheet-body"></div>
+  </div>
+</div>
+
+<div class="dock" id="dock">
+  <button class="dock-tab" id="dock-tab">Ask about this data</button>
+  <div class="dock-panel" id="dock-panel" hidden>
+    <div class="dock-head">
+      <strong>Ask about this data</strong>
+      <span class="dock-sub">Answers are checked number by number against the warehouse. Anything it cannot account for is refused.</span>
+      <button class="btn" id="dock-close">close</button>
+    </div>
+    <div class="dock-log" id="dock-log"></div>
+    <form class="dock-form" id="dock-form">
+      <input id="dock-input" type="text" maxlength="500" autocomplete="off"
+             placeholder="Who is undercutting us most, and is the evidence fresh?">
+      <button class="btn primary" type="submit" id="dock-send">Ask</button>
+    </form>
+  </div>
+</div>
+
+<script src="/showcase/static/showcase.js"></script>
+</body>
+</html>
