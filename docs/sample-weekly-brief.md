@@ -1,0 +1,56 @@
+# Weekly Pricing Brief — 2026-09-01
+
+Covering the last 7 days.
+
+## At a glance
+
+- Products tracked: 3932
+- Retailers tracked: 157
+- Price observations this period: 3306
+- Active undercuts: 108
+
+## Where we are being undercut
+
+| Product | Retailer | Ours | Theirs | Gap | Severity | Evidence |
+|---|---|---|---|---|---|---|
+| Nutella Plant-Based | EDEKA | 5.73 EUR | 3.29 EUR | -42.58% | critical | stale (497d old) |
+| Nutella Plant-Based | Carrefour | 5.73 EUR | 3.34 EUR | -41.71% | critical | stale (210d old) |
+| Nutella Plant-Based | E. Leclerc Drive | 5.73 EUR | 3.62 EUR | -36.82% | critical | stale (577d old) |
+| Nutella Plant-Based | Centre Commercial E.Leclerc | 5.73 EUR | 3.66 EUR | -36.13% | critical | stale (178d old) |
+| Nutella Plant-Based | Super U | 5.73 EUR | 3.79 EUR | -33.86% | critical | stale (329d old) |
+
+## Most volatile prices
+
+| Product | Retailer | Mean | Range | CV | Band |
+|---|---|---|---|---|---|
+| Petites Madeleines | E. Leclerc | 2.43 EUR | 1.83–4.4 | 0.46 | high |
+| Nutella Plant-Based | Bayern | 3.26 EUR | 1.79–3.99 | 0.39 | high |
+| Basilic | Carrefour City | 0.69 EUR | 0.49–0.99 | 0.38 | high |
+| Lentilles vertes | Centre Commercial E. Leclerc | 1.21 EUR | 0.74–1.69 | 0.38 | high |
+| PESTO ROSSO | E.Leclerc | 2.46 EUR | 1.97–4.08 | 0.37 | high |
+
+## Biggest movers
+
+- **Basilic** at Carrefour City: 0.49 → 0.99 EUR (102.04%) on 2026-08-27
+- **Basilic** at Carrefour City: 0.99 → 0.59 EUR (-40.4%) on 2026-08-29
+- **Persil** at Carrefour City: 0.99 → 0.65 EUR (-34.34%) on 2026-08-29
+- **Curry** at Carrefour City: 0.99 → 0.69 EUR (-30.3%) on 2026-08-29
+- **Huile d\'olive** at Carrefour City: 12.9 → 10.49 EUR (-18.68%) on 2026-08-29
+
+## Forecasts
+
+- 77 forecast points across 11 products
+- Horizon: 2026-09-02 to 2026-09-08
+
+| Model | Series | Avg MAPE | Worst |
+|---|---|---|---|
+| AutoARIMA | 9 | 3.13% | 15.56% |
+| SeasonalNaive | 9 | 3.13% | 15.56% |
+| AutoETS | 9 | 3.13% | 15.56% |
+
+## Data quality
+
+- Latest observation: 2026-09-01
+- Matches awaiting review: 2187
+- Matches approved: 370
+- Failed ingestion runs this period: 0
