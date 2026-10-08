@@ -103,8 +103,8 @@ docs/           architecture decision records and project report
 ### Installation
 
 ```bash
-git clone https://github.com/Lovevyas21/Competitor_Price_-_Availability_Intelligence_Platform_CompAI.git
-cd Competitor_Price_-_Availability_Intelligence_Platform_CompAI
+git clone https://github.com/lovevyas/Competitor_Price_Availability_Intelligence_Platform_COMPAI/
+cd Competitor_Price_Availability_Intelligence_Platform__COMPAI
 
 uv venv
 uv pip install -e ".[dev,matching,ai,transform]"
